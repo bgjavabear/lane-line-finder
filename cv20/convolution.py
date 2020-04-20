@@ -63,5 +63,4 @@ def apply_boundary_method(x, y, src, borderType):
             return src[src.shape[0] - 1, x]
         if y >= src.shape[0] and x >= src.shape[1]:  # lower right boundary
             return src[src.shape[0] - 1, src.shape[1] - 1]
-        raise Exception('temporary')
     raise Exception('Unsupported border type')
