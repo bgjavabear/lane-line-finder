@@ -1,21 +1,30 @@
-import cv2
-import matplotlib.image as mpimg
-import matplotlib.pyplot as plt
+import numpy as np
+from utils import timeit
+from cv20 import get_gradient_magnitude_and_orientation
 
-test_image = mpimg.imread('resources/margo_test.jpg')
-test_image_gray_scaled = cv2.cvtColor(test_image, cv2.COLOR_RGB2GRAY)
 
-test_image_blurred = cv2.GaussianBlur(test_image_gray_scaled, (5, 5), 1.4)
+def run_all_tests():
+    test_01_get_gradient_orientation()
+    print('test 01 passed')
 
-expected_image_with_blur = cv2.Canny(test_image_blurred, 20, 40)
-expected_image_without_blur = cv2.Canny(test_image_gray_scaled, 20, 40)
 
-f, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(20, 10))
-ax1.set_title('Initial')
-ax1.imshow(test_image_gray_scaled, cmap='gray')
-ax2.set_title('Canny without blur')
-ax2.imshow(expected_image_without_blur, cmap='gray')
-ax3.set_title('Canny with blur')
-ax3.imshow(expected_image_with_blur, cmap='gray')
+@timeit
+def test_01_get_gradient_orientation():
+    test_image = np.array([[0, 0, 0, 0, 0, 0, 0],
+                           [0, 0, 0, 0, 0, 0, 0],
+                           [0, 0, 0, 0, 0, 0, 0],
+                           [0, 0, 0, 0, 0, 0, 0],
+                           [0, 0, 0, 0, 50, 50, 50],
+                           [0, 0, 0, 0, 50, 150, 150],
+                           [0, 0, 0, 0, 50, 150, 250]], dtype=np.float64)
+    G, theta = get_gradient_magnitude_and_orientation(test_image)
+    angle = theta * 180 / np.pi
+    angle = angle.astype(int)
 
-plt.show()
+    assert angle[4][4] == -45
+    assert angle[5][5] == -45
+    assert angle[5][3] == 0
+    assert angle[3][5] == -90
+
+
+run_all_tests()
