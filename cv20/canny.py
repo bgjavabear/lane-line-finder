@@ -1,16 +1,16 @@
-def Canny(image, threshold1, threshold2, edges=None, apertureSize=None, L2gradient=None):
-    """
-    The implementation of Canny Edge Detection Algorithm
-    :param image:
-    :param threshold1:
-    :param threshold2:
-    :param edges:
-    :param apertureSize:
-    :param L2gradient:
-    :return:
-    """
+from gaussian import GaussianBlur
+from kernel import KERNEL_SOBEL
+import cv2
+import numpy as np
 
-    # filter image with derivative of gaussian
+
+def Canny(image, threshold1, threshold2, edges=None, apertureSize=None, L2gradient=None):
+    gray_scaled_image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+
+    # blur the image
+    blurred_image = GaussianBlur(gray_scaled_image, 5, 1.4)
+
+    kx, ky = KERNEL_SOBEL
 
     # find magnitude and orientation of gradient
 

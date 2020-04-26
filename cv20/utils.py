@@ -1,6 +1,6 @@
-import numpy as np
 import time
-import math
+import multiprocessing as mp
+import numpy as np
 
 
 def normalize(arr):
@@ -25,14 +25,3 @@ def timeit(method):
         return result
 
     return timed
-
-
-def squared_diff(arr1, arr2):
-    if arr1.shape != arr2.shape:
-        raise Exception('Shapes are different')
-
-    result = 0.
-    for x in range(0, arr1.shape[1]):
-        for y in range(0, arr1.shape[0]):
-            result += math.sqrt((arr2[y][x] - arr1[y][x]) ** 2)
-    return result
