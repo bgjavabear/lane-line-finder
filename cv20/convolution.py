@@ -1,6 +1,5 @@
 from enum import Enum
 import numpy as np
-from concurrent.futures import ProcessPoolExecutor, as_completed
 
 
 class BorderType(Enum):
@@ -13,7 +12,6 @@ class BorderType(Enum):
     REPLICATE = 2
 
 
-# TODO does not work. ProcessPoolExecutor hangs
 def convolution(src, k, borderType=BorderType.REPLICATE):
     out = np.zeros_like(src, dtype=float)
     s = k.shape[0] // 2
@@ -21,18 +19,15 @@ def convolution(src, k, borderType=BorderType.REPLICATE):
     xu = srct.shape[1]
     yu = srct.shape[0]
 
-    pool = ProcessPoolExecutor()
-    results = [pool.submit(apply_filter, x - s, y - s, k, srct[y - s:y + s + 1, x - s:x + s + 1])
-               for x in range(s, xu - s) for y in range(s, yu - s)]
+    for x in range(s, xu - s):
+        for y in range(s, yu - s):
+            apply_filter(x - s, y - s, k, srct[y - s:y + s + 1, x - s:x + s + 1], out)
 
-    for f in as_completed(results):
-        x, y, result = f.result()
-        out[y][x] = result
     return out
 
 
-def apply_filter(x, y, kernel, target):
-    return x, y, np.sum(kernel * target)
+def apply_filter(x, y, kernel, target, out):
+    out[y][x] = np.sum(kernel * target)
 
 
 def transform_image(src, pad_width, borderType):
