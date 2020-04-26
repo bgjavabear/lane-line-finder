@@ -22,11 +22,11 @@ def create_gaussian_kernel(ksize, sigmaX=1, sigmaY=None):
 def get_sobel_kernels():
     kx = np.array([[-1, 0, 1],
                    [-2, 0, 2],
-                   [-1, 0, 1]])
+                   [-1, 0, 1]], np.float32)
 
-    ky = np.array([[-1, 0, 1],
-                   [-2, 0, 2],
-                   [-1, 0, 1]])
+    ky = np.array([[1, 2, 1],
+                   [0, 0, 0],
+                   [-1, -2, -1]], np.float32)
     return kx, ky
 
 

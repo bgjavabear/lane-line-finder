@@ -1,5 +1,6 @@
 from gaussian import GaussianBlur
 from kernel import KERNEL_SOBEL
+from convolution import convolution
 import cv2
 import numpy as np
 
@@ -10,9 +11,12 @@ def Canny(image, threshold1, threshold2, edges=None, apertureSize=None, L2gradie
     # blur the image
     blurred_image = GaussianBlur(gray_scaled_image, 5, 1.4)
 
-    kx, ky = KERNEL_SOBEL
-
     # find magnitude and orientation of gradient
+    kx, ky = KERNEL_SOBEL
+    Ix = convolution(blurred_image, kx)
+    Iy = convolution(blurred_image, ky)
+
+    G = np.hypot(Ix, Iy)
 
     # Non-maximum suppression
 
