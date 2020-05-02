@@ -23,7 +23,7 @@ def Canny(image, threshold1=0.05, threshold2=0.09):
     # Edge Tracking by Hysteresis
     out = hysteresis(thresholded_image, weak, strong)
 
-    return out
+    return out.astype('uint8')
 
 
 def get_gradient_magnitude_and_orientation(src):
