@@ -18,6 +18,7 @@ def finding_lane_lines(src):
     polygon_vertex1, polygon_vertex2, polygon_vertex3, polygon_vertex4 = get_vertices(src_shape, .9, .1, .39)
 
     # gray scale
+    # TODO find cleaner way of amplifying yellow color in gray scaled image
     gray = cv2.cvtColor(src, cv2.COLOR_RGB2GRAY)
     hsv = cv2.cvtColor(src, cv2.COLOR_RGB2HSV)
     s = hsv[:, :, 1]
@@ -40,6 +41,7 @@ def finding_lane_lines(src):
     line_image = np.zeros_like(src)
     lines = cv2.HoughLinesP(masked_edges, rho, theta, threshold, np.array([]), min_line_length, max_line_gap)
 
+    # TODO move to separate method and make easier to read and understand
     right_x1_arr, right_y1_arr = np.array([]), np.array([])
     right_x2_arr, right_y2_arr = np.array([]), np.array([])
 
